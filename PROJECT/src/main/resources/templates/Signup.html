@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href = "/css/Signup.css" rel = stylesheet type = "text/css">
+
+</head>
+<body>
+    <div class="login-container">
+        <h2>Sign Up</h2>
+        <form action="/Signup" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Masukkan Username Anda">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Masukkan Password Anda">
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn signup-btn">Sign Up</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

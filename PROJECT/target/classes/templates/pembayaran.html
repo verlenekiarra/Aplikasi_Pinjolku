@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="/css/Pembayaran.css" rel="stylesheet" type="text/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">PINJOLKU</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/beranda">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dataDiri">Data Diri</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/infopinjamNas">Info Peminjaman</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/peminjaman">Peminjaman</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/pembayaran">Pembayaran</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Detail Pembayaran</h1>
+        <form id="pembayaranForm" action="/submitPembayaran" method="POST">
+            <div class="form-group">
+                <label for="idpembayaran">Nomor Peminjaman:</label>
+                <input type="text" id="idpeminjaman" name="idpeminjaman" class="form-control" 
+                       th:value="${idpeminjaman}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="duration">Durasi Peminjaman:</label>
+                <input type="text" id="duration" name="duration" class="form-control" readonly>
+            </div>
+
+           <div class="form-group">
+            <label for="nominal">Nominal Pembayaran:</label>
+            <input type="number" id="nominal" name="nominal" class="form-control" 
+                   th:value="${totalPinjaman}" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="paymentMethod">Metode Pembayaran:</label>
+                <div class="dropdown">
+                    <button class="dropdown-btn" type="button" onclick="toggleDropdown()">
+                        <span id="selected-method">Pilih Metode</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <div class="dropdown-item" onclick="selectMethod('Transfer Bank')">
+                            <i class="fas fa-university"></i> Transfer Bank
+                        </div>
+                        <div class="dropdown-item" onclick="selectMethod('E-Wallet')">
+                            <i class="fas fa-wallet"></i> E-Wallet
+                        </div>
+                        <div class="dropdown-item" onclick="selectMethod('Kartu Kredit')">
+                            <i class="fas fa-credit-card"></i> Kartu Kredit
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="paymentMethod" name="paymentMethod" required>
+            </div>
+            
+            <button type="submit" class="btn-submit">Lakukan Pembayaran</button>
+        </form>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-check-circle mr-2"></i>NOTIFIKASI
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="success-animation">
+                        <div class="success-circle">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    <h4 class="success-title">Selamat!</h4>
+                    <p class="success-message">Pembayaran Anda Berhasil</p>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        <small>Terima kasih atas pembayaran Anda</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-submit modal-btn" onclick="window.location.href='/beranda'">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Kembali
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        window.onload = function() {
+            const duration = sessionStorage.getItem('loanDuration');
+            const interest = sessionStorage.getItem('loanInterest');
+    
+            if (duration) {
+                document.getElementById('duration').value = duration;
+                sessionStorage.removeItem('loanDuration');
+            }
+        };
+
+        function toggleDropdown() {
+            const dropdown = document.querySelector('.dropdown-content');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function selectMethod(method) {
+            document.getElementById('selected-method').textContent = method;
+            document.getElementById('paymentMethod').value = method;
+            document.querySelector('.dropdown-content').style.display = 'none';
+        }
+
+        // Mengambil data dari pembayaran saat ditekan submit
+        document.getElementById('pembayaranForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Create form data
+            const formData = new FormData(this);
+            
+            // Submit form menggunakan fetch
+            fetch('/submitPembayaran', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Ketika dipencet maka akan mengeluarkan si modal konfirmasi
+                    $('#confirmModal').modal('show');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

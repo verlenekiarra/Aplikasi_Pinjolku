@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Data Diri</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href = "/css/dataDiri.css" rel = stylesheet type="text/css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">PINJOLKU</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/beranda">Beranda</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/dataDiri">Data Diri</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/infopinjamNas">Info Peminjaman</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/peminjaman">Peminjaman</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pembayaran">Pembayaran</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="header-section">
+            <h2>Data Diri</h2>
+            <p class="subtitle">Lengkapi informasi pribadi Anda untuk melanjutkan proses peminjaman</p>
+        </div>
+
+        <div class="form-container">
+            <form action="/datadiri/save" method="POST">
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-user"></i>
+                        Informasi Pribadi
+                    </div>
+                    <div class="form-group">
+                        <label for="nama">Nama Lengkap</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukkan Nama Lengkap">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="NIK">NIK</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="NIK" name="nik" placeholder="Masukkan NIK">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="norek">No Rekening</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="norek" name="norek" placeholder="Masukkan Nomor Rekening">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-envelope"></i>
+                        Kontak
+                    </div>
+                    <div class="form-group">
+                        <label for="Email">Email</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input type="email" class="form-control" id="Email" name="email" placeholder="someone@gmail.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telp">Nomor Telepon</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            </div>
+                            <input type="tel" class="form-control" id="telp" name="telp" placeholder="08123456789">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-home"></i>
+                        Informasi Tambahan
+                    </div>
+                    <div class="form-group">
+                        <label for="Alamat">Alamat</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                            </div>
+                            <textarea class="form-control" id="Alamat" name="alamat" rows="3" placeholder="Masukkan Alamat"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lahir">Tanggal Lahir</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            </div>
+                            <input type="date" class="form-control" id="lahir" name="lahir">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="save" name="save">
+                    Simpan Data
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

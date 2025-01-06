@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peminjaman</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="/css/Peminjaman.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">PINJOLKU</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/beranda">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dataDiri">Data Diri</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/infopinjamNas">Info Peminjaman</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/peminjaman">Peminjaman</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pembayaran">Pembayaran</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Detail Peminjaman</h1>
+        <form id="peminjamanForm" action="/submitPeminjaman" method="POST">
+            <div class="form-group">
+                <label for="duration">Durasi Peminjaman:</label>
+                <input type="text" id="duration" name="duration" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+                <label for="interest">Bunga:</label>
+                <input type="text" id="interest" name="interest" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+                <label for="amount">Nominal Peminjaman:</label>
+                <input type="number" id="amount" name="amount" class="form-control" placeholder="Masukkan jumlah (Rp)" required>
+            </div>
+            <div class="center-button">
+                <button type="submit" class="btn-submit">Ajukan Peminjaman</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-check-circle mr-2"></i>NOTIFIKASI
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="success-animation">
+                        <div class="success-circle">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    <h4 class="success-title">Selamat!</h4>
+                    <p class="success-message">Dana Anda berhasil dicairkan</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+       // Mengambil data session storage
+window.onload = function() {
+    const duration = sessionStorage.getItem('loanDuration');
+    const interest = sessionStorage.getItem('loanInterest');
+
+    if (duration) {
+        document.getElementById('duration').value = duration;
+        sessionStorage.removeItem('loanDuration');
+    }
+    if (interest) {
+        document.getElementById('interest').value = interest + '%';
+        sessionStorage.removeItem('loanInterest');
+    }
+}
+
+$('#peminjamanForm').on('submit', function(e) {
+    e.preventDefault();
+    
+    if (this.checkValidity()) {
+        // Simpan durasi ke session storage
+        const duration = document.getElementById('duration').value;
+        sessionStorage.setItem('loanDuration', duration);
+        
+        // Mengirim form ke server
+        $.ajax({
+            url: '/submitPeminjaman',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                // Tampilkan modal setelah pengiriman form berhasil
+                $('#confirmModal').modal('show');
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    } else {
+        this.reportValidity();
+    }
+});
+
+// Event listener untuk tombol silang
+$(document).ready(function() {
+    $('.close').click(function() {
+        window.location.href = '/beranda';
+    });
+});
+    </script>
+</body>
+</html>

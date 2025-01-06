@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="/css/LogNasabah.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="user-icon">
+            <i class="fas fa-user-circle"></i>
+        </div>
+        <h2>Login sebagai Nasabah</h2>
+
+        <!-- Tambahkan div untuk pesan error -->
+        <div class="error-message" style="color: red; font-weight: bold;">
+            <!-- Gunakan Thymeleaf untuk memeriksa atribut errorMessage -->
+            <p th:if="${errorMessage != null}" th:text="${errorMessage}"></p>
+        </div>
+
+        <form action="/nasabah/login" method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-group">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" name="nasabahUser" required placeholder="Masukkan Username Anda">
+                </div>
+            </div>
+        
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="nasabahPass" required placeholder="Masukkan Password Anda">
+                </div>
+            </div>
+        
+            <button type="submit" class="login-btn" href="/beranda">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </form>
+        <a href="Signup" class="create-account">
+            <i class="fas fa-user-plus"></i> Buat Akun Baru
+        </a>
+        <div class="login-footer">
+            <i class="fas fa-shield-alt"></i>
+            Secure Login
+        </div>
+    </div>
+</body>
+</html>

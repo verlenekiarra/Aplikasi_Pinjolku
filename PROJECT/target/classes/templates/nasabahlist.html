@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Nasabah</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="/css/nasabahlist.css" rel="stylesheet" type="text/css">
+
+    <style>
+        .modal-backdrop {
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal {
+            background-color: transparent;
+        }
+        .modal-dialog {
+            margin-top: 20vh;
+        }
+        .modal-content {
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn-action {
+            min-width: 80px;
+        }
+    </style>
+</head>
+<body>
+      <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">PINJOLKU</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/berandaAdmin">Beranda</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/admin/nasabahlist">List Nasabah</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="first-box">
+        <h2>Daftar Nasabah</h2>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody th:each="nasabah, no : ${nasabahList}">
+                <tr>
+                    <td th:text="${nasabah.getNasabahId()}"></td>
+                    <td>
+                        <a th:href="@{/nasabah/{id}(id=${nasabah.getNasabahId()})}" th:text="${nasabah.getNasabahUser()}"></a>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm" 
+                                th:onclick="'showDeleteConfirmation(\'' + ${nasabah.getNasabahId()} + '\')'"
+                                data-toggle="modal" data-target="#confirmDeleteModal">
+                            Hapus
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Konfirmasi -->
+    <div class="modal" id="confirmDeleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin menghapus data ini?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-action" data-dismiss="modal">Batal</button>
+                    <form id="deleteForm" method="post">
+                        <button type="submit" class="btn btn-danger btn-action">Hapus</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        function showDeleteConfirmation(nasabahId) {
+            $('#deleteForm').attr('action', '/admin/nasabah/hapus/' + nasabahId);
+        }
+    
+        $(document).ready(function() {
+            $('#confirmDeleteModal').on('show.bs.modal', function () {
+                $('body').css('overflow', 'hidden');
+            });
+    
+            $('#confirmDeleteModal').on('hidden.bs.modal', function () {
+                $('body').css('overflow', 'auto');
+            });
+        });
+    </script>
+</body>
+</html>
